@@ -1,4 +1,5 @@
-﻿using SubWatch.Common.Request;
+﻿using SubWatch.Common.Models;
+using SubWatch.Common.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace SubWatch.Services.Interfaces
     public interface ISubWatchService
     {
         double CalculateTotalCost(SubscriptionRequestDto subscriptionRequestDto);
+        DateTime CalculateRenewDate(Subscription subscription);
     }
 }

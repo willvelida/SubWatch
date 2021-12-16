@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using SubWatch.Repository.Interfaces;
 using SubWatch.Services.Interfaces;
@@ -21,25 +22,52 @@ namespace SubWatch.Services
             _logger = logger;
         }
 
+        public DateTime CalculateRenewDate(Subscription subscription)
+        {
+            switch (subscription.RenewalFrequency)
+            {
+                case RenewalFrequency.Weekly:
+                    subscription.RenewalDate = subscription.RenewalDate.AddDays(7);
+                    break;
+                case RenewalFrequency.Fortnightly:
+                    subscription.RenewalDate = subscription.RenewalDate.AddDays(14);
+                    break;
+                case RenewalFrequency.Monthly:
+                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(1);
+                    break;
+                case RenewalFrequency.Quarterly:
+                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(3);
+                    break;
+                case RenewalFrequency.HalfYearly:
+                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(6);
+                    break;
+                default:
+                    subscription.RenewalDate = subscription.RenewalDate.AddYears(1);
+                    break;
+            }
+
+            return subscription.RenewalDate;
+        }
+
         public double CalculateTotalCost(SubscriptionRequestDto subscriptionRequestDto)
         {
             var renewalFrequency = 0;
 
             switch (subscriptionRequestDto.RenewalFrequency)
             {
-                case Common.Models.RenewalFrequency.Weekly:
+                case RenewalFrequency.Weekly:
                     renewalFrequency = 52;
                     break;
-                case Common.Models.RenewalFrequency.Fortnightly:
+                case RenewalFrequency.Fortnightly:
                     renewalFrequency = 26;
                     break;
-                case Common.Models.RenewalFrequency.Monthly:
+                case RenewalFrequency.Monthly:
                     renewalFrequency = 12;
                     break;
-                case Common.Models.RenewalFrequency.Quarterly:
+                case RenewalFrequency.Quarterly:
                     renewalFrequency = 4;
                     break;
-                case Common.Models.RenewalFrequency.HalfYearly:
+                case RenewalFrequency.HalfYearly:
                     renewalFrequency = 2;
                     break;
                 default:

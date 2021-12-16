@@ -1,12 +1,47 @@
-﻿using System;
+﻿using AutoFixture;
+using AutoMapper;
+using FluentAssertions;
+using FluentAssertions.Execution;
+using SubWatch.Common.Models;
+using SubWatch.Common.Request;
+using SubWatch.Services.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace SubWatch.Services.UnitTests
 {
-    internal class MapSubscriptionRequestDtoToSubscriptionShould
+    public class MapSubscriptionRequestDtoToSubscriptionShould
     {
+        [Fact]
+        public void MapRequestDtoToSubscriptionSuccessfully()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var requestDto = fixture.Create<SubscriptionRequestDto>();
+
+            var mappingConfiguration = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MapSubscriptionRequestDtoToSubscription());
+            });
+
+            var mapper = mappingConfiguration.CreateMapper();
+
+            // Act
+            var subscription = mapper.Map<Subscription>(requestDto);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                subscription.Name.Should().Be(requestDto.Name);
+                subscription.SubscriptionType.Should().Be(requestDto.SubscriptionType);
+                subscription.RenewalCost.Should().Be(requestDto.RenewalCost);
+                subscription.StartDate.Should().Be(requestDto.StartDate);
+                subscription.RenewalFrequency.Should().Be(requestDto.RenewalFrequency);
+            }
+        }
     }
 }
