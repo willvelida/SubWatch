@@ -1,10 +1,15 @@
 using AutoFixture;
+using AutoMapper;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using SubWatch.Repository.Interfaces;
+using SubWatch.Services.Interfaces;
+using SubWatch.Services.Mappers;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SubWatch.Services.UnitTests
@@ -12,98 +17,57 @@ namespace SubWatch.Services.UnitTests
     public class SubWatchServiceShould
     {
         private Mock<ISubWatchRepository> _mockSubWatchRepository;
+        private Mock<ISubscriptionHelper> _mockSubscriptionHelper;
         private Mock<ILogger<SubWatchService>> _mockLogger;
+        private IMapper _mapper;
         private SubWatchService _serviceUnderTest;
 
         public SubWatchServiceShould()
         {
             _mockSubWatchRepository = new Mock<ISubWatchRepository>();
+            _mockSubscriptionHelper = new Mock<ISubscriptionHelper>();
             _mockLogger = new Mock<ILogger<SubWatchService>>();
-            _serviceUnderTest = new SubWatchService(_mockSubWatchRepository.Object, _mockLogger.Object);
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MapSubscriptionRequestDtoToSubscription());
+            });
+            var mapper = config.CreateMapper();
+            _mapper = mapper;
+            _serviceUnderTest = new SubWatchService(
+                _mockSubWatchRepository.Object,
+                _mockSubscriptionHelper.Object,
+                _mapper,
+                _mockLogger.Object);
         }
 
-        [Theory]
-        [InlineData(RenewalFrequency.Weekly)]
-        [InlineData(RenewalFrequency.Fortnightly)]
-        [InlineData(RenewalFrequency.Monthly)]
-        [InlineData(RenewalFrequency.Yearly)]
-        [InlineData(RenewalFrequency.Quarterly)]
-        [InlineData(RenewalFrequency.HalfYearly)]
-        public void CalculateTotalCostCorrectly(RenewalFrequency renewalFrequency)
+        [Fact]
+        public async Task SuccessfullyAddSubscription()
         {
             // Arrange
             var fixture = new Fixture();
             var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
-            subscriptionRequestDto.RenewalCost = 10.00;
-            subscriptionRequestDto.RenewalFrequency = renewalFrequency;
 
             // Act
-            var expectedCost = _serviceUnderTest.CalculateTotalCost(subscriptionRequestDto);
+            Func<Task> subWatchService = async () => await _serviceUnderTest.AddSubscripion(subscriptionRequestDto);
 
             // Assert
-            switch (renewalFrequency)
-            {
-                case RenewalFrequency.Weekly:
-                    Assert.Equal(520.00, expectedCost);
-                    break;
-                case RenewalFrequency.Fortnightly:
-                    Assert.Equal(260.00, expectedCost);
-                    break;
-                case RenewalFrequency.Monthly:
-                    Assert.Equal(120.00, expectedCost);
-                    break;
-                case RenewalFrequency.Quarterly:
-                    Assert.Equal(40.00, expectedCost);
-                    break;
-                case RenewalFrequency.HalfYearly:
-                    Assert.Equal(20.00, expectedCost);
-                    break;
-                default:
-                    Assert.Equal(10.00, expectedCost);
-                    break;
-            }
+            await subWatchService.Should().NotThrowAsync<Exception>();
         }
 
-        [Theory]
-        [InlineData(RenewalFrequency.Weekly)]
-        [InlineData(RenewalFrequency.Fortnightly)]
-        [InlineData(RenewalFrequency.Monthly)]
-        [InlineData(RenewalFrequency.Yearly)]
-        [InlineData(RenewalFrequency.Quarterly)]
-        [InlineData(RenewalFrequency.HalfYearly)]
-        public void CalculcateRenewalDateCorrectly(RenewalFrequency renewalFrequency)
+        [Fact]
+        public async Task ThrowExceptionWhenRepositoryCallFails()
         {
             // Arrange
             var fixture = new Fixture();
-            var subscription = fixture.Create<Subscription>();
-            subscription.RenewalDate = new DateTime(2021, 12, 17);
-            subscription.RenewalFrequency = renewalFrequency;
+            var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
+
+            _mockSubWatchRepository.Setup(repo => repo.CreateSubscription(It.IsAny<Subscription>())).ThrowsAsync(new Exception("Exception thrown in AddSubscription: Oops!"));
 
             // Act
-            var expectedDate = _serviceUnderTest.CalculateRenewDate(subscription);
+            Func<Task> subWatchService = async () => await _serviceUnderTest.AddSubscripion(subscriptionRequestDto);
 
             // Assert
-            switch (renewalFrequency)
-            {
-                case RenewalFrequency.Weekly:
-                    Assert.Equal(expectedDate, new DateTime(2021, 12, 24));
-                    break;
-                case RenewalFrequency.Fortnightly:
-                    Assert.Equal(expectedDate, new DateTime(2021, 12, 31));
-                    break;
-                case RenewalFrequency.Monthly:
-                    Assert.Equal(expectedDate, new DateTime(2022, 1, 17));
-                    break;
-                case RenewalFrequency.Quarterly:
-                    Assert.Equal(expectedDate, new DateTime(2022, 3, 17));
-                    break;
-                case RenewalFrequency.HalfYearly:
-                    Assert.Equal(expectedDate, new DateTime(2022, 6, 17));
-                    break;
-                default:
-                    Assert.Equal(expectedDate, new DateTime(2022, 12, 17));
-                    break;
-            }
+            await subWatchService.Should().ThrowAsync<Exception>().WithMessage($"Exception thrown in AddSubscription: Oops!");
         }
     }
 }

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace SubWatch.Services.Interfaces
 {
-    public interface ISubWatchService
+    public interface ISubscriptionHelper
     {
-        Task AddSubscripion(SubscriptionRequestDto subscriptionRequestDto);
+        double CalculateTotalCost(SubscriptionRequestDto subscriptionRequestDto);
+        DateTime CalculateRenewalDate(Subscription subscription);
     }
 }

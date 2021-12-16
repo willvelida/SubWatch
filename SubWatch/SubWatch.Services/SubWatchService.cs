@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using SubWatch.Repository.Interfaces;
@@ -14,70 +15,42 @@ namespace SubWatch.Services
     public class SubWatchService : ISubWatchService
     {
         private readonly ISubWatchRepository _subWatchRepository;
+        private readonly ISubscriptionHelper _subscriptionHelper;
+        private readonly IMapper _mapper;
         private readonly ILogger<SubWatchService> _logger;
 
-        public SubWatchService(ISubWatchRepository subWatchRepository, ILogger<SubWatchService> logger)
+        public SubWatchService(
+            ISubWatchRepository subWatchRepository,
+            ISubscriptionHelper subscriptionHelper,
+            IMapper mapper,
+            ILogger<SubWatchService> logger)
         {
             _subWatchRepository = subWatchRepository;
+            _subscriptionHelper = subscriptionHelper;
+            _mapper = mapper;
             _logger = logger;
         }
 
-        public DateTime CalculateRenewDate(Subscription subscription)
+        public async Task AddSubscripion(SubscriptionRequestDto subscriptionRequestDto)
         {
-            switch (subscription.RenewalFrequency)
+            _logger.LogInformation($"Entering {nameof(AddSubscripion)} method.");
+
+            try
             {
-                case RenewalFrequency.Weekly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddDays(7);
-                    break;
-                case RenewalFrequency.Fortnightly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddDays(14);
-                    break;
-                case RenewalFrequency.Monthly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(1);
-                    break;
-                case RenewalFrequency.Quarterly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(3);
-                    break;
-                case RenewalFrequency.HalfYearly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(6);
-                    break;
-                default:
-                    subscription.RenewalDate = subscription.RenewalDate.AddYears(1);
-                    break;
+                var subscription = _mapper.Map<Subscription>(subscriptionRequestDto);
+                subscription.Id = Guid.NewGuid().ToString();
+                subscription.RenewalDate = _subscriptionHelper.CalculateRenewalDate(subscription);
+                subscription.TotalCost = _subscriptionHelper.CalculateTotalCost(subscriptionRequestDto);
+
+                await _subWatchRepository.CreateSubscription(subscription);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception thrown in {nameof(AddSubscripion)}: {ex.Message}");
+                throw;
             }
 
-            return subscription.RenewalDate;
-        }
-
-        public double CalculateTotalCost(SubscriptionRequestDto subscriptionRequestDto)
-        {
-            var renewalFrequency = 0;
-
-            switch (subscriptionRequestDto.RenewalFrequency)
-            {
-                case RenewalFrequency.Weekly:
-                    renewalFrequency = 52;
-                    break;
-                case RenewalFrequency.Fortnightly:
-                    renewalFrequency = 26;
-                    break;
-                case RenewalFrequency.Monthly:
-                    renewalFrequency = 12;
-                    break;
-                case RenewalFrequency.Quarterly:
-                    renewalFrequency = 4;
-                    break;
-                case RenewalFrequency.HalfYearly:
-                    renewalFrequency = 2;
-                    break;
-                default:
-                    renewalFrequency = 1;
-                    break;
-            }
-
-            var totalCost = subscriptionRequestDto.RenewalCost * renewalFrequency;
-
-            return totalCost;
+            _logger.LogInformation($"Executed {nameof(AddSubscripion)} method");
         }
     }
 }
