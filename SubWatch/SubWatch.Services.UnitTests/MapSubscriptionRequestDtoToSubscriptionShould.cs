@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SubWatch.Common.Models
+namespace SubWatch.Services.UnitTests
 {
-    public enum SubscriptionStatus
+    internal class MapSubscriptionRequestDtoToSubscriptionShould
     {
-        Active,
-        Cancelled,
-        OnHold
     }
 }

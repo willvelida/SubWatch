@@ -1,20 +1,18 @@
-﻿using System;
+﻿using SubWatch.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SubWatch.Common.Models
+namespace SubWatch.Common.Request
 {
-    public class Subscription
+    public class SubscriptionRequestDto
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string SubscriptionType { get; set; }
         public double RenewalCost { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime RenewalDate { get; set; }
         public RenewalFrequency RenewalFrequency { get; set; }
-        public double TotalCost { get; set; }
     }
 }
