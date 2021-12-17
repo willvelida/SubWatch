@@ -51,7 +51,7 @@ resource subWatchDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
 }
 
 resource subWatchContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-07-01-preview' = {
-  name: '${subWatchCosmosAccount.name}/${subWatchDatabase.name}/${containerName}'
+  name: '${subWatchDatabase.name}/${containerName}'
   properties: {
     resource: {
       id: containerName
