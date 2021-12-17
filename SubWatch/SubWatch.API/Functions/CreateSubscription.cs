@@ -33,12 +33,9 @@ namespace SubWatch.API.Functions
         {
             try
             {
-                string messageRequest = await new StreamReader(req.Body).ReadToEndAsync();
-                var subscriptionRequestDto = JsonConvert.DeserializeObject<SubscriptionRequestDto>(messageRequest);
+                await _subWatchService.AddSubscripion(req);
 
-                await _subWatchService.AddSubscripion(subscriptionRequestDto);
-
-                return new CreatedResult(nameof(CreateSubscription), subscriptionRequestDto);
+                return new CustomRequestObjectResult(null, StatusCodes.Status201Created);
             }
             catch (BadRequestException ex)
             {
