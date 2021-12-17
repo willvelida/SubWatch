@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubWatch.Common", "SubWatch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubWatch.Repository", "SubWatch.Repository\SubWatch.Repository.csproj", "{93C9AAC3-B5C6-4B63-860A-1364E175E294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubWatch.Services", "SubWatch.Services\SubWatch.Services.csproj", "{FBFEAAC9-FCAB-4B40-A075-143D39BCFDDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubWatch.Services", "SubWatch.Services\SubWatch.Services.csproj", "{FBFEAAC9-FCAB-4B40-A075-143D39BCFDDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubWatch.Services.UnitTests", "SubWatch.Services.UnitTests\SubWatch.Services.UnitTests.csproj", "{DCF2613C-808D-44B9-8882-827F6A5D677E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubWatch.Services.UnitTests", "SubWatch.Services.UnitTests\SubWatch.Services.UnitTests.csproj", "{DCF2613C-808D-44B9-8882-827F6A5D677E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubWatch.Deployment", "SubWatch.Deployment", "{C4436661-2FE7-4A23-A00D-C7B2974034E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
