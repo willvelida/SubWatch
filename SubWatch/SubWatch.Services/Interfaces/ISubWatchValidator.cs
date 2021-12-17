@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using System;
 using System.Collections.Generic;
@@ -9,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace SubWatch.Services.Interfaces
 {
-    public interface ISubWatchService
+    public interface ISubWatchValidator
     {
-        Task AddSubscripion(HttpRequest httpRequest);   
+        Task<SubscriptionRequestDto> ValidateRequest(HttpRequest httpRequest);
     }
 }

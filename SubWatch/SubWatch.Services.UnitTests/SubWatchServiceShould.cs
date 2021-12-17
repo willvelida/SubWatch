@@ -16,6 +16,7 @@ namespace SubWatch.Services.UnitTests
 {
     public class SubWatchServiceShould
     {
+        private Mock<ISubWatchValidator> _mockSubWatchValidator;
         private Mock<ISubWatchRepository> _mockSubWatchRepository;
         private Mock<ISubscriptionHelper> _mockSubscriptionHelper;
         private Mock<ILogger<SubWatchService>> _mockLogger;
@@ -24,6 +25,7 @@ namespace SubWatch.Services.UnitTests
 
         public SubWatchServiceShould()
         {
+            _mockSubWatchValidator = new Mock<ISubWatchValidator>();
             _mockSubWatchRepository = new Mock<ISubWatchRepository>();
             _mockSubscriptionHelper = new Mock<ISubscriptionHelper>();
             _mockLogger = new Mock<ILogger<SubWatchService>>();
@@ -34,6 +36,7 @@ namespace SubWatch.Services.UnitTests
             var mapper = config.CreateMapper();
             _mapper = mapper;
             _serviceUnderTest = new SubWatchService(
+                _mockSubWatchValidator.Object,
                 _mockSubWatchRepository.Object,
                 _mockSubscriptionHelper.Object,
                 _mapper,
