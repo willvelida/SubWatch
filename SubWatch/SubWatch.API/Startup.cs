@@ -12,11 +12,7 @@ using SubWatch.Services.Interfaces;
 using SubWatch.Services.Mappers;
 using SubWatch.Services.Validators;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace SubWatch.API

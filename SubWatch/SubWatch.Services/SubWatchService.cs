@@ -2,14 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SubWatch.Common.Models;
-using SubWatch.Common.Request;
 using SubWatch.Repository.Interfaces;
 using SubWatch.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SubWatch.Services
 {
@@ -57,6 +51,6 @@ namespace SubWatch.Services
             }
 
             _logger.LogInformation($"Executed {nameof(AddSubscripion)} method");
-        }       
+        }
     }
 }
