@@ -88,7 +88,7 @@ resource subWatchFunctionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           'name': 'AppConfigurationConnectionString'
-          'value': '${listKeys(subWatchAppConfig.id, subWatchAppConfig.apiVersion).keys[0].connectionString}'
+          'value': '${listKeys(subWatchAppConfig.id, subWatchAppConfig.apiVersion).value[0].connectionString}'
         }
       ]
     }
