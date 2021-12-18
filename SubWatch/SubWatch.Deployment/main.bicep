@@ -92,7 +92,7 @@ resource subWatchFunctionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           'name': 'CosmosDBConnectionString'
-          'value': '${listKeys(subWatchCosmosAccount.id, subWatchCosmosAccount.apiVersion).connectionStrings[0].connectionString}'
+          'value': '${listKeys(subWatchCosmosAccount.id, subWatchCosmosAccount.apiVersion).primaryMasterKey}'
         }
       ]
     }
