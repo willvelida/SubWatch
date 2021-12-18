@@ -48,7 +48,6 @@ namespace SubWatch.API.Functions
             {
                 _logger.LogError($"Exception thrown in {nameof(CreateSubscription)}: {ex.Message}");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-                throw ex;
             }
         }
     }

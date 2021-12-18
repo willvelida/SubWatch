@@ -55,7 +55,7 @@ namespace SubWatch.Services.UnitTests
             // Arrange
             var fixture = new Fixture();
             var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
-            subscriptionRequestDto.StartDate = "18/12/2021";
+            subscriptionRequestDto.StartDate = new DateTime(2021, 12, 18);
             byte[] byteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(subscriptionRequestDto));
             MemoryStream memoryStream = new MemoryStream(byteArray);
             _mockHttpRequest.Setup(r => r.Body).Returns(memoryStream);
@@ -75,7 +75,7 @@ namespace SubWatch.Services.UnitTests
             // Arrange
             var fixture = new Fixture();
             var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
-            subscriptionRequestDto.StartDate = "18/12/2021";
+            subscriptionRequestDto.StartDate = new DateTime(2021, 12, 18);
             byte[] byteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(subscriptionRequestDto));
             MemoryStream memoryStream = new MemoryStream(byteArray);
             _mockHttpRequest.Setup(r => r.Body).Returns(memoryStream);
