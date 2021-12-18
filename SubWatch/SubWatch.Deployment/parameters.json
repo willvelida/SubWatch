@@ -13,6 +13,18 @@
         },
         "containerName": {
             "value": "subscriptions"
+        },
+        "functionAppName": {
+            "value": "fasubwatchapi"
+        },
+        "hostingPlanName": {
+            "value": "subwatchappplan"
+        },
+        "storageAccountName": {
+            "value": "sasubwatchapi"
+        },
+        "appInsightName": {
+            "value": "subwatchappinsights"
         }
     }
 }
