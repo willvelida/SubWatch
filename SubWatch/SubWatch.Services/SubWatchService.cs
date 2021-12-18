@@ -36,7 +36,6 @@ namespace SubWatch.Services
             try
             {
                 var subscriptionRequestDto = await _subWatchValidator.ValidateRequest(httpRequest);
-
                 var subscription = _mapper.Map<Subscription>(subscriptionRequestDto);
                 subscription.Id = Guid.NewGuid().ToString();
                 subscription.RenewalDate = _subscriptionHelper.CalculateRenewalDate(subscription);
