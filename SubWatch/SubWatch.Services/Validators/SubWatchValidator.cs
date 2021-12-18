@@ -17,7 +17,10 @@ namespace SubWatch.Services.Validators
                 throw new BadRequestException("Subscription name cannot be null or empty");
 
             if (string.IsNullOrWhiteSpace(subscriptionRequestDto.SubscriptionType))
-                throw new BadRequestException("Subscription type cannot be null or empty");           
+                throw new BadRequestException("Subscription type cannot be null or empty");
+
+            if (string.IsNullOrWhiteSpace(subscriptionRequestDto.StartDate))
+                throw new BadRequestException("StartDate cannot be null or empty");
 
             return subscriptionRequestDto;
         }

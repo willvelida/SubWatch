@@ -36,7 +36,6 @@ namespace SubWatch.Services.UnitTests
                 subscription.Name.Should().Be(requestDto.Name);
                 subscription.SubscriptionType.Should().Be(requestDto.SubscriptionType);
                 subscription.RenewalCost.Should().Be(requestDto.RenewalCost);
-                subscription.StartDate.Should().Be(DateTime.Parse(requestDto.StartDate));
                 subscription.RenewalFrequency.Should().Be(requestDto.RenewalFrequency);
             }
         }
