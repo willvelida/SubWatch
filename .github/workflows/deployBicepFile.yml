@@ -1,4 +1,8 @@
-on: [push]
+on:
+  push:
+    paths:
+      - 'SubWatch.Deployment/*'
+      
 name: Deploy SubWatch.Infrastructure
 jobs:
   build-and-deploy:
