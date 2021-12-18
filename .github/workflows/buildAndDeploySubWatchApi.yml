@@ -23,11 +23,9 @@ jobs:
         cd SubWatch
         ls
      - name: Restore dependencies
-       run: dotnet restore '**/*.csproj'
+       run: dotnet restore 'SubWatch.API/SubWatch.API.csproj'
      - name: Build
-       run: dotnet build '**/*.csproj' --no-restore
-     - name: Test
-       run: dotnet test '**/*UnitTests/*.csproj' --no-build --verbosity normal
+       run: dotnet build 'SubWatch.API/SubWatch.API.csproj' --no-restore
      - name: Publish Functions
        run: dotnet publish '**/*.csproj' --configuration Release --output ${{ env.OUTPUT_PATH }}
      - name: Package Functions
