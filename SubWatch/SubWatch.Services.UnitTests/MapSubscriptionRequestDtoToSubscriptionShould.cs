@@ -5,6 +5,7 @@ using FluentAssertions.Execution;
 using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using SubWatch.Services.Mappers;
+using System;
 using Xunit;
 
 namespace SubWatch.Services.UnitTests
@@ -17,6 +18,7 @@ namespace SubWatch.Services.UnitTests
             // Arrange
             var fixture = new Fixture();
             var requestDto = fixture.Create<SubscriptionRequestDto>();
+            requestDto.StartDate = "18/12/2021";
 
             var mappingConfiguration = new MapperConfiguration(mc =>
             {
@@ -34,7 +36,7 @@ namespace SubWatch.Services.UnitTests
                 subscription.Name.Should().Be(requestDto.Name);
                 subscription.SubscriptionType.Should().Be(requestDto.SubscriptionType);
                 subscription.RenewalCost.Should().Be(requestDto.RenewalCost);
-                subscription.StartDate.Should().Be(requestDto.StartDate);
+                subscription.StartDate.Should().Be(DateTime.Parse(requestDto.StartDate));
                 subscription.RenewalFrequency.Should().Be(requestDto.RenewalFrequency);
             }
         }
