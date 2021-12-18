@@ -20,12 +20,16 @@ jobs:
          dotnet-version: 6.0.x
      - name: Restore dependencies
        run: dotnet restore
+       working-directory: './SubWatch/*'
      - name: Build
        run: dotnet build --no-restore
+       working-directory: './SubWatch/*'
      - name: Test
        run: dotnet test --no-build --verbosity normal
+       working-directory: './SubWatch/*'
      - name: Publish Functions
-       run: dotnet publisj --configuration Release --output ${{ env.OUTPUT_PATH }}
+       run: dotnet publish --configuration Release --output ${{ env.OUTPUT_PATH }}
+       working-directory: './SubWatch/*'
      - name: Package Functions
        uses: actions/upload-artifact@v1
        with:
