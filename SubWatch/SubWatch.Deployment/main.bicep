@@ -106,6 +106,22 @@ resource subWatchAppConfig 'Microsoft.AppConfiguration/configurationStores@2021-
   sku: {
     name: 'standard'
   }
+
+  resource databaseConfigPropety 'keyValues' = {
+    name: 'Settings:DatabaseName'
+    properties: {
+      contentType: 'string'
+      value: 'SubWatchDB'
+    }
+  }
+
+  resource containerConfigProperty 'keyValues' = {
+    name: 'Settings:ContainerName'
+    properties: {
+      contentType: 'string'
+      value: 'subscriptions'
+    } 
+  }
 }
 
 // Cosmos DB
