@@ -23,13 +23,13 @@ jobs:
         cd SubWatch
         ls
      - name: Restore dependencies
-       run: dotnet restore
+       run: dotnet restore '**/*.csproj'
      - name: Build
-       run: dotnet build --no-restore
+       run: dotnet build '**/*.csproj' --no-restore
      - name: Test
-       run: dotnet test --no-build --verbosity normal
+       run: dotnet test '**/*UnitTests/*.csproj' --no-build --verbosity normal
      - name: Publish Functions
-       run: dotnet publish --configuration Release --output ${{ env.OUTPUT_PATH }}
+       run: dotnet publish '**/*.csproj' --configuration Release --output ${{ env.OUTPUT_PATH }}
      - name: Package Functions
        uses: actions/upload-artifact@v1
        with:
