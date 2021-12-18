@@ -5,8 +5,6 @@ env:
 on:
   push:
     branches: [ main ]
-    paths:
-      - '!./SubWatch/SubWatch.Deployment/**'
 
 jobs:
   build:
