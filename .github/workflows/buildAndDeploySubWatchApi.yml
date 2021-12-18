@@ -7,54 +7,27 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  build-and-deploy:
     runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
 
-    steps:
-     - name: Checkout
-       uses: actions/checkout@v2
-     - name: Setup .NET 6
-       uses: actions/setup-dotnet@v1
-       with:
-         dotnet-version: 6.0.x
-     - name: List Directory
-       run: |
-        cd SubWatch
-        ls
-     - name: Restore dependencies
-       run: dotnet restore 'SubWatch.API/SubWatch.API.csproj'
-     - name: Build
-       run: dotnet build 'SubWatch.API/SubWatch.API.csproj' --no-restore
-     - name: Publish Functions
-       run: dotnet publish '**/*.csproj' --configuration Release --output ${{ env.OUTPUT_PATH }}
-     - name: Package Functions
-       uses: actions/upload-artifact@v1
-       with:
-        name: functions
-        path: ${{ env.OUTPUT_PATH }}
-  
-  deploy:
-    runs-on: ubuntu_latest
-    needs: [build]
-    env:
-      FUNC_APP_NAME: fasubwatchapi
-    steps:
-     - name: Download function
-       uses: actions/download-artifact@v1
-       with:
-        name: functions
-        path: ${{ env.OUTPUT_PATH }}
-    
-     - name: Login via Azure CLI
-       uses: azure/login@v1
-       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-     - name: Deploy SubWatch.API Function
-       uses: Azure/functions-action@v1
-       with:
-        app-name: ${{ env.FUNC_APP_NAME }}
-        package: ${{ env.OUTPUT_PATH }}
-      
-  
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
