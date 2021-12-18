@@ -32,6 +32,7 @@ namespace SubWatch.API
                 })
                 .Build();
 
+            builder.Services.AddLogging();
             builder.Services.AddAzureAppConfiguration();
             builder.Services.AddSingleton<IConfiguration>(config);
 
