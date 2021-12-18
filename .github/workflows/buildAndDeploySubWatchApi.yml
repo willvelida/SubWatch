@@ -2,6 +2,7 @@ name: Build and Deploy SubWatch.API
 env:
   OUTPUT_PATH: ${{ github.workspace }}/.ouput
   DOTNET_VERSION: 6.0.x
+  AZURE_FUNCTIONAPP_NAME: fasubwatchapi
 
 on:
   push:
