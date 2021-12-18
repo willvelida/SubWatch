@@ -6,6 +6,7 @@ param functionAppName string
 param hostingPlanName string
 param storageAccountName string
 param appInsightName string
+param appConfigName string
 
 // Azure Function: App Service Plan
 resource subWatchHostingPlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -92,6 +93,20 @@ resource subWatchFunctionApp 'Microsoft.Web/sites@2021-02-01' = {
   ]
 }
 
+// App Configuration
+resource subWatchAppConfig 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
+  name: appConfigName
+  location: location
+  tags: {
+    applicationName: 'SubWatch'
+  }
+  identity: {
+    type: 'SystemAssigned'
+  }
+  sku: {
+    name: 'standard'
+  }
+}
 
 // Cosmos DB
 resource subWatchCosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' = {

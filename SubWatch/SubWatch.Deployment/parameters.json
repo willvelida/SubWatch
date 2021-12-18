@@ -25,6 +25,9 @@
         },
         "appInsightName": {
             "value": "subwatchappinsights"
+        },
+        "appConfigName": {
+            "value": "subwatchappconfig"
         }
     }
 }
