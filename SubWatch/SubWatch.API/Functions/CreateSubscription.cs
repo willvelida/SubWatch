@@ -31,6 +31,8 @@ namespace SubWatch.API.Functions
         {
             try
             {
+                _logger.LogInformation($"Processing POST Request: Subscription");
+
                 await _subWatchService.AddSubscripion(req);
 
                 return new CustomRequestObjectResult(null, StatusCodes.Status201Created);
@@ -46,6 +48,7 @@ namespace SubWatch.API.Functions
             {
                 _logger.LogError($"Exception thrown in {nameof(CreateSubscription)}: {ex.Message}");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                throw ex;
             }
         }
     }
