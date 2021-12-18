@@ -35,7 +35,7 @@ namespace SubWatch.Services.UnitTests
             {
                 Name = "Netflix",
                 SubscriptionType = "Online",
-                StartDate = new DateTime(2021, 12, 18),
+                StartDate = "18/12/2021",
                 RenewalCost = 14.99,
                 RenewalFrequency = RenewalFrequency.Monthly
             };

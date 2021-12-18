@@ -7,6 +7,9 @@ param hostingPlanName string
 param storageAccountName string
 param appInsightName string
 param appConfigName string
+param apimInstanceName string
+param publisherEmail string
+param publisherName string
 
 // Azure Function: App Service Plan
 resource subWatchHostingPlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -91,6 +94,23 @@ resource subWatchFunctionApp 'Microsoft.Web/sites@2021-02-01' = {
     subWatchHostingPlan
     subWatchStorageAccount
   ]
+}
+
+// APIM
+resource subWatchApim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
+  name: apimInstanceName
+  location: location
+  tags: {
+    applicationName: 'SubWatch'
+  }
+  sku: {
+    capacity: 0
+    name: 'Consumption'
+  }
+  properties: {
+    publisherEmail: publisherEmail
+    publisherName: publisherName
+  }
 }
 
 // App Configuration

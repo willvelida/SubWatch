@@ -28,6 +28,15 @@
         },
         "appConfigName": {
             "value": "subwatchappconfig"
+        },
+        "apimInstanceName": {
+            "value": "subwatchapi"
+        },
+        "publisherEmail": {
+            "value": "willvelida@hotmail.co.uk"
+        },
+        "publisherName": {
+            "value": "SubWatch"
         }
     }
 }

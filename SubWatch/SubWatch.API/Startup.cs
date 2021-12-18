@@ -25,8 +25,14 @@ namespace SubWatch.API
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
+                .AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(Environment.GetEnvironmentVariable("AppConfigurationConnectionString"))
+                    .Select("*");
+                })
                 .Build();
 
+            builder.Services.AddAzureAppConfiguration();
             builder.Services.AddSingleton<IConfiguration>(config);
 
             builder.Services.AddOptions<Settings>()
