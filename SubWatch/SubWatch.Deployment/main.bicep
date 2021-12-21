@@ -192,6 +192,7 @@ resource subWatchCosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01
   }
 }
 
+// Database
 resource subWatchDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-07-01-preview' = {
   name: '${subWatchCosmosAccount.name}/${databaseName}'
   properties: {
@@ -201,6 +202,7 @@ resource subWatchDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
   }
 }
 
+// Containers
 resource subWatchContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-07-01-preview' = {
   name: '${subWatchDatabase.name}/${containerName}'
   properties: {
