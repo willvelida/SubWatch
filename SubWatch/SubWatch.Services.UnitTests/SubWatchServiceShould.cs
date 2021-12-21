@@ -155,5 +155,47 @@ namespace SubWatch.Services.UnitTests
             // Assert
             await subWatchService.Should().ThrowAsync<NotFoundException>().WithMessage($"No Subscription with ID: 1 found! Delete failed");
         }
+
+        [Fact]
+        public async Task ThrowBadRequestExceptionWhenUpdateRequestDtoIsInvalid()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var subscription = fixture.Create<Subscription>();
+            var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
+            byte[] byteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(subscriptionRequestDto));
+            MemoryStream memoryStream = new MemoryStream(byteArray);
+            _mockHttpRequest.Setup(r => r.Body).Returns(memoryStream);
+
+            _mockSubWatchRepository.Setup(repo => repo.GetSubscription(It.IsAny<string>())).ReturnsAsync(subscription);
+
+            _mockSubWatchValidator.Setup(validator => validator.ValidateRequest(It.IsAny<HttpRequest>())).ThrowsAsync(new BadRequestException("Oops!!"));
+
+            // Act
+            Func<Task> subWatchService = async () => await _serviceUnderTest.UpdateSubscription("1", _mockHttpRequest.Object);
+
+            // Assert
+            await subWatchService.Should().ThrowAsync<BadRequestException>().WithMessage($"Oops!!");
+        }
+
+        [Fact]
+        public async Task ThrowNotFoundExceptionWhenSubscriptionToUpdateIsNull()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var subscription = fixture.Create<Subscription>();
+            var subscriptionRequestDto = fixture.Create<SubscriptionRequestDto>();
+            byte[] byteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(subscriptionRequestDto));
+            MemoryStream memoryStream = new MemoryStream(byteArray);
+            _mockHttpRequest.Setup(r => r.Body).Returns(memoryStream);
+
+            _mockSubWatchRepository.Setup(repo => repo.GetSubscription(It.IsAny<string>())).Returns(Task.FromResult<Subscription>(null));
+
+            // Act
+            Func<Task> subWatchService = async () => await _serviceUnderTest.UpdateSubscription("1", _mockHttpRequest.Object);
+
+            // Assert
+            await subWatchService.Should().ThrowAsync<NotFoundException>().WithMessage($"Subscription with ID: 1 not found!");
+        }
     }
 }

@@ -84,5 +84,35 @@ namespace SubWatch.Services
 
             return subscription;
         }
+
+        public async Task UpdateSubscription(string subscriptionId, HttpRequest httpRequest)
+        {
+            _logger.LogInformation($"Entering {nameof(UpdateSubscription)} method.");
+
+            try
+            {
+                var subscriptionToUpdate = await _subWatchRepository.GetSubscription(subscriptionId);
+
+                if (subscriptionToUpdate is null)
+                    throw new NotFoundException($"Subscription with ID: {subscriptionId} not found!");
+
+                var subscriptionUpdateRequestDto = await _subWatchValidator.ValidateRequest(httpRequest);
+
+                subscriptionToUpdate.Name = subscriptionUpdateRequestDto.Name;
+                subscriptionToUpdate.SubscriptionType = subscriptionUpdateRequestDto.SubscriptionType;
+                subscriptionToUpdate.RenewalCost = subscriptionUpdateRequestDto.RenewalCost;
+                subscriptionToUpdate.StartDate = subscriptionUpdateRequestDto.StartDate;
+                subscriptionToUpdate.RenewalFrequency = subscriptionUpdateRequestDto.RenewalFrequency;
+
+                await _subWatchRepository.UpdateSubscription(subscriptionId, subscriptionToUpdate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception thrown in {nameof(UpdateSubscription)}: {ex.Message}");
+                throw;
+            }
+
+            _logger.LogInformation($"Executed {nameof(UpdateSubscription)} method.");
+        }
     }
 }

@@ -117,7 +117,7 @@ namespace SubWatch.Repository
                     EnableContentResponseOnWrite = false
                 };
 
-                await _subwatchContainer.ReplaceItemAsync<Subscription>(subscription, subscriptionId, new PartitionKey(subscription.SubscriptionType));
+                await _subwatchContainer.ReplaceItemAsync(subscription, subscriptionId, new PartitionKey(subscriptionId));
             }
             catch (Exception ex)
             {
