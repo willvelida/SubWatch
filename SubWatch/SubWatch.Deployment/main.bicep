@@ -10,6 +10,7 @@ param appConfigName string
 param apimInstanceName string
 param publisherEmail string
 param publisherName string
+param subWatchProductName string
 
 // Azure Function: App Service Plan
 resource subWatchHostingPlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -118,6 +119,17 @@ resource subWatchApim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
+  }
+}
+
+// Create SubWatch Product in APIM
+resource subWatchApimProduct 'Microsoft.ApiManagement/service/products@2021-08-01' = {
+  name: '${subWatchApim.name}/${subWatchProductName}'
+  properties: {
+    approvalRequired: true
+    subscriptionRequired: true
+    state: 'published'
+    displayName: subWatchProductName
   }
 }
 

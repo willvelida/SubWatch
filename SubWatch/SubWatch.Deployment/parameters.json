@@ -37,6 +37,9 @@
         },
         "publisherName": {
             "value": "SubWatch"
+        },
+        "subWatchProductName": {
+            "value": "Subscriptions"
         }
     }
 }
