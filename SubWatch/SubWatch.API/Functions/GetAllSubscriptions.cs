@@ -33,7 +33,7 @@ namespace SubWatch.API.Functions
 
                 var subscriptions = await _subWatchService.GetAllSubscriptions();
 
-                return new CustomRequestObjectResult(subscriptions, StatusCodes.Status200OK);
+                return new OkObjectResult(subscriptions);
             }
             catch (Exception ex)
             {

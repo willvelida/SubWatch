@@ -36,7 +36,7 @@ namespace SubWatch.API.Functions
 
                 var subscription = await _subWatchService.RetrieveSubscription(subscriptionId);
 
-                return new CustomRequestObjectResult(subscription, StatusCodes.Status200OK);
+                return new OkObjectResult(subscription);
             }
             catch (NotFoundException ex)
             {
