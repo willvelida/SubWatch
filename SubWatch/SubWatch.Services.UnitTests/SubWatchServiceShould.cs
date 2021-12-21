@@ -129,5 +129,31 @@ namespace SubWatch.Services.UnitTests
             // Assert
             await subWatchService.Should().ThrowAsync<NotFoundException>().WithMessage($"No subscription with ID 1 exists!");
         }
+
+        [Fact]
+        public async Task SuccessfullyDeleteSubscription()
+        {
+            // Arrange
+            _mockSubWatchRepository.Setup(repo => repo.DeleteSubscription(It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            // Act
+            Func<Task> subWatchService = async () => await _serviceUnderTest.DeleteSubscription("1");
+
+            // Assert
+            await subWatchService.Should().NotThrowAsync<NotFoundException>();
+        }
+
+        [Fact]
+        public async Task ThrowNotFoundExceptionWhenRepositoryCantDelete()
+        {
+            // Arrange
+            _mockSubWatchRepository.Setup(repo => repo.DeleteSubscription(It.IsAny<string>())).ThrowsAsync(new NotFoundException("No Subscription with ID: 1 found! Delete failed"));
+
+            // Act
+            Func<Task> subWatchService = async () => await _serviceUnderTest.DeleteSubscription("1");
+
+            // Assert
+            await subWatchService.Should().ThrowAsync<NotFoundException>().WithMessage($"No Subscription with ID: 1 found! Delete failed");
+        }
     }
 }

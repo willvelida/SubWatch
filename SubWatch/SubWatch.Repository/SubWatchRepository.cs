@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SubWatch.Common;
+using SubWatch.Common.Exceptions;
 using SubWatch.Common.Models;
 using SubWatch.Repository.Interfaces;
 
@@ -48,7 +49,11 @@ namespace SubWatch.Repository
 
             try
             {
-                await _subwatchContainer.DeleteItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionId));
+                ItemResponse<Subscription> itemResponse = await _subwatchContainer.DeleteItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionId));
+            }
+            catch (CosmosException cex) when (cex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                throw new NotFoundException($"No Subscription with ID: {subscriptionId} found! Delete failed");
             }
             catch (Exception ex)
             {

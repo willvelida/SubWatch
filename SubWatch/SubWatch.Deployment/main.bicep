@@ -133,8 +133,6 @@ resource subWatchApimProduct 'Microsoft.ApiManagement/service/products@2021-08-0
   }
 }
 
-// Adding Function to APIM
-
 // App Configuration
 resource subWatchAppConfig 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
   name: appConfigName

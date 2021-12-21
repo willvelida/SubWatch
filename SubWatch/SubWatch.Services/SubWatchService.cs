@@ -54,6 +54,23 @@ namespace SubWatch.Services
             _logger.LogInformation($"Executed {nameof(AddSubscripion)} method");
         }
 
+        public async Task DeleteSubscription(string subscriptionId)
+        {
+            _logger.LogInformation($"Entering {nameof(DeleteSubscription)} method.");
+
+            try
+            {
+                await _subWatchRepository.DeleteSubscription(subscriptionId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception thrown in {nameof(DeleteSubscription)}: {ex.Message}");
+                throw;
+            }
+
+            _logger.LogInformation($"Executed {nameof(DeleteSubscription)} method.");
+        }
+
         public async Task<Subscription> RetrieveSubscription(string subscriptionId)
         {
             _logger.LogInformation($"Entering {nameof(RetrieveSubscription)} method.");
