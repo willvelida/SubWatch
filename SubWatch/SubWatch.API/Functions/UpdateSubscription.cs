@@ -36,7 +36,7 @@ namespace SubWatch.API.Functions
 
                 await _subWatchService.UpdateSubscription(subscriptionId, req);
 
-                return new NoContentResult();
+                return new CustomRequestObjectResult(null, StatusCodes.Status204NoContent);
             }
             catch (NotFoundException ex)
             {

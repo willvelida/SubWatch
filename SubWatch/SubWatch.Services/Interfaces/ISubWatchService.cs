@@ -9,5 +9,6 @@ namespace SubWatch.Services.Interfaces
         Task<Subscription> RetrieveSubscription(string subscriptionId);
         Task DeleteSubscription(string subscriptionId);
         Task UpdateSubscription(string subscriptionId, HttpRequest httpRequest);
+        Task<List<Subscription>> GetAllSubscriptions();
     }
 }

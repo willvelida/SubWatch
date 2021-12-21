@@ -73,6 +73,19 @@ namespace SubWatch.Services
             _logger.LogInformation($"Executed {nameof(DeleteSubscription)} method.");
         }
 
+        public async Task<List<Subscription>> GetAllSubscriptions()
+        {
+            _logger.LogInformation($"Entering {nameof(GetAllSubscriptions)} method.");
+
+            var subscriptions = new List<Subscription>();
+
+            subscriptions = await _subWatchRepository.GetAllSubscriptions();
+
+            _logger.LogInformation($"Executed {nameof(GetAllSubscriptions)} method.");
+
+            return subscriptions;
+        }
+
         public async Task<Subscription> RetrieveSubscription(string subscriptionId)
         {
             _logger.LogInformation($"Entering {nameof(RetrieveSubscription)} method.");

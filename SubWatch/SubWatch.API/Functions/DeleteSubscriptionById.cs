@@ -36,7 +36,7 @@ namespace SubWatch.API.Functions
 
                 await _subWatchService.DeleteSubscription(subscriptionId);
 
-                return new NoContentResult();
+                return new CustomRequestObjectResult(null, StatusCodes.Status204NoContent);
             }
             catch (NotFoundException ex)
             {
