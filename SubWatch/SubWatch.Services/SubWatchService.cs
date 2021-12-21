@@ -123,6 +123,9 @@ namespace SubWatch.Services
                 subscriptionToUpdate.StartDate = subscriptionUpdateRequestDto.StartDate;
                 subscriptionToUpdate.RenewalFrequency = subscriptionUpdateRequestDto.RenewalFrequency;
 
+                subscriptionToUpdate.RenewalDate = _subscriptionHelper.CalculateRenewalDate(subscriptionToUpdate);
+                subscriptionToUpdate.TotalCost = _subscriptionHelper.CalculateTotalCost(subscriptionUpdateRequestDto);
+
                 await _subWatchRepository.UpdateSubscription(subscriptionId, subscriptionToUpdate);
             }
             catch (Exception ex)
