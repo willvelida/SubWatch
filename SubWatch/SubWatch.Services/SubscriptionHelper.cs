@@ -8,25 +8,27 @@ namespace SubWatch.Services
     {
         public DateTime CalculateRenewalDate(Subscription subscription)
         {
+            DateTime startDate = DateTime.Parse(subscription.StartDate);
+
             switch (subscription.RenewalFrequency)
             {
                 case RenewalFrequency.Weekly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddDays(7);
+                    subscription.RenewalDate = startDate.AddDays(7);
                     break;
                 case RenewalFrequency.Fortnightly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddDays(14);
+                    subscription.RenewalDate = startDate.AddDays(14);
                     break;
                 case RenewalFrequency.Monthly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(1);
+                    subscription.RenewalDate = startDate.AddMonths(1);
                     break;
                 case RenewalFrequency.Quarterly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(3);
+                    subscription.RenewalDate = startDate.AddMonths(3);
                     break;
                 case RenewalFrequency.HalfYearly:
-                    subscription.RenewalDate = subscription.RenewalDate.AddMonths(6);
+                    subscription.RenewalDate = startDate.AddMonths(6);
                     break;
                 default:
-                    subscription.RenewalDate = subscription.RenewalDate.AddYears(1);
+                    subscription.RenewalDate = startDate.AddYears(1);
                     break;
             }
 

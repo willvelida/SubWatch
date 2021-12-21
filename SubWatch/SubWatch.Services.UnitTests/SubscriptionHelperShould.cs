@@ -69,7 +69,7 @@ namespace SubWatch.Services.UnitTests
             // Arrange
             var fixture = new Fixture();
             var subscription = fixture.Create<Subscription>();
-            subscription.RenewalDate = new DateTime(2021, 12, 17);
+            subscription.StartDate = "17/12/2021";
             subscription.RenewalFrequency = renewalFrequency;
 
             // Act
