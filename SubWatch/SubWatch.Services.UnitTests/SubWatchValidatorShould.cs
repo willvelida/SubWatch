@@ -96,5 +96,30 @@ namespace SubWatch.Services.UnitTests
             // Assert
             await validatorAction.Should().ThrowAsync<BadRequestException>().WithMessage($"Subscription type cannot be null or empty");
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ThrowBadRequestExceptionWhenSubscriptionIdIsNullOrWhitespace(string subscriptionId)
+        {
+            // Act
+            Action validatorAction = () => _serviceUnderTest.ValidateSubscriptionId(subscriptionId);
+
+            // Assert
+            validatorAction.Should().Throw<BadRequestException>();
+        }
+
+        [Fact]
+        public void NotThrowBadRequestExceptionWhenSubscriptionIdIsValid()
+        {
+            // Arrange
+            var subscriptionId = Guid.NewGuid().ToString();
+
+            // Act
+            Action validatorAction = () => _serviceUnderTest.ValidateSubscriptionId(subscriptionId);
+
+            // Assert
+            validatorAction.Should().NotThrow<BadRequestException>();
+        }
     }
 }

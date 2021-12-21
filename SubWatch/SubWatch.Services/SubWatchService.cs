@@ -60,6 +60,8 @@ namespace SubWatch.Services
 
             try
             {
+                _subWatchValidator.ValidateSubscriptionId(subscriptionId);
+
                 await _subWatchRepository.DeleteSubscription(subscriptionId);
             }
             catch (Exception ex)
@@ -74,6 +76,8 @@ namespace SubWatch.Services
         public async Task<Subscription> RetrieveSubscription(string subscriptionId)
         {
             _logger.LogInformation($"Entering {nameof(RetrieveSubscription)} method.");
+
+            _subWatchValidator.ValidateSubscriptionId(subscriptionId);
 
             var subscription = await _subWatchRepository.GetSubscription(subscriptionId);
 
@@ -91,6 +95,8 @@ namespace SubWatch.Services
 
             try
             {
+                _subWatchValidator.ValidateSubscriptionId(subscriptionId);
+
                 var subscriptionToUpdate = await _subWatchRepository.GetSubscription(subscriptionId);
 
                 if (subscriptionToUpdate is null)

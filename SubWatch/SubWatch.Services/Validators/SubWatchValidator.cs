@@ -24,5 +24,15 @@ namespace SubWatch.Services.Validators
 
             return subscriptionRequestDto;
         }
+
+        public void ValidateSubscriptionId(string subscriptionId)
+        {
+            if (string.IsNullOrWhiteSpace(subscriptionId))
+                throw new BadRequestException("Subscription Id cannot be null or empty");
+
+            bool isIdValid = Guid.TryParse(subscriptionId, out var id);
+            if (isIdValid is false)
+                throw new BadRequestException("Subscription Id is invalid!");
+        }
     }
 }
