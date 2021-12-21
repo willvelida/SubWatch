@@ -5,9 +5,9 @@ namespace SubWatch.Repository.Interfaces
     public interface ISubWatchRepository
     {
         Task CreateSubscription(Subscription subscription);
-        Task DeleteSubscription(string subscriptionId, string subscriptionType);
+        Task DeleteSubscription(string subscriptionId);
         Task<List<Subscription>> GetAllSubscriptions();
-        Task<Subscription> GetSubscription(string subscriptionId, string subscriptionType);
+        Task<Subscription> GetSubscription(string subscriptionId);
         Task UpdateSubscription(string subscriptionId, Subscription subscription);
     }
 }

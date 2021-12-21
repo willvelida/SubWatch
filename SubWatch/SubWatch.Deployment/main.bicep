@@ -121,6 +121,8 @@ resource subWatchApim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
   }
 }
 
+// Adding Function to APIM
+
 // App Configuration
 resource subWatchAppConfig 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
   name: appConfigName
@@ -206,7 +208,7 @@ resource subWatchContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/c
       id: containerName
       partitionKey: {
         paths: [
-          '/subscriptionType'
+          '/id'
         ]
         kind: 'Hash'
       }

@@ -1,10 +1,12 @@
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
+using SubWatch.Common.Exceptions;
 using SubWatch.Common.Models;
 using SubWatch.Common.Request;
 using SubWatch.Repository.Interfaces;
@@ -89,6 +91,43 @@ namespace SubWatch.Services.UnitTests
 
             // Assert
             await subWatchService.Should().ThrowAsync<Exception>().WithMessage($"Exception thrown in AddSubscription: Oops!");
+        }
+
+        [Fact]
+        public async Task RetrieveSubscriptionSuccessfully()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var subscription = fixture.Create<Subscription>();
+
+            _mockSubWatchRepository.Setup(repo => repo.GetSubscription(It.IsAny<string>())).ReturnsAsync(subscription);
+
+            // Act
+            var expectedResponse = await _serviceUnderTest.RetrieveSubscription(subscription.Id);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                expectedResponse.Id.Should().Be(subscription.Id);
+                expectedResponse.Name.Should().Be(subscription.Name);
+                expectedResponse.SubscriptionType.Should().Be(subscription.SubscriptionType);
+                expectedResponse.RenewalCost.Should().Be(subscription.RenewalCost);
+                expectedResponse.RenewalDate.Should().Be(subscription.RenewalDate);
+                expectedResponse.RenewalFrequency.Should().Be(subscription.RenewalFrequency);
+            }
+        }
+
+        [Fact]
+        public async Task ThrowNotFoundExceptionWhenRepositoryClassReturnsNull()
+        {
+            // Arrange
+            _mockSubWatchRepository.Setup(repo => repo.GetSubscription(It.IsAny<string>())).Returns(Task.FromResult<Subscription>(null));
+
+            // Act
+            Func<Task> subWatchService = async () => await _serviceUnderTest.RetrieveSubscription("1");
+
+            // Assert
+            await subWatchService.Should().ThrowAsync<NotFoundException>().WithMessage($"No subscription with ID 1 exists!");
         }
     }
 }

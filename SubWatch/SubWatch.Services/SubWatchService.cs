@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using SubWatch.Common.Exceptions;
 using SubWatch.Common.Models;
 using SubWatch.Repository.Interfaces;
 using SubWatch.Services.Interfaces;
@@ -51,6 +52,20 @@ namespace SubWatch.Services
             }
 
             _logger.LogInformation($"Executed {nameof(AddSubscripion)} method");
+        }
+
+        public async Task<Subscription> RetrieveSubscription(string subscriptionId)
+        {
+            _logger.LogInformation($"Entering {nameof(RetrieveSubscription)} method.");
+
+            var subscription = await _subWatchRepository.GetSubscription(subscriptionId);
+
+            if (subscription is null)
+                throw new NotFoundException($"No subscription with ID {subscriptionId} exists!");
+
+            _logger.LogInformation($"Executed {nameof(RetrieveSubscription)} method.");
+
+            return subscription;
         }
     }
 }

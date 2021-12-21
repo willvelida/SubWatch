@@ -33,7 +33,7 @@ namespace SubWatch.Repository
                     EnableContentResponseOnWrite = false
                 };
 
-                await _subwatchContainer.CreateItemAsync(subscription, new PartitionKey(subscription.SubscriptionType), itemRequestOptions);
+                await _subwatchContainer.CreateItemAsync(subscription, new PartitionKey(subscription.Id), itemRequestOptions);
             }
             catch (Exception ex)
             {
@@ -42,13 +42,13 @@ namespace SubWatch.Repository
             }
         }
 
-        public async Task DeleteSubscription(string subscriptionId, string subscriptionType)
+        public async Task DeleteSubscription(string subscriptionId)
         {
             _logger.LogInformation($"Entering {nameof(DeleteSubscription)} method");
 
             try
             {
-                await _subwatchContainer.DeleteItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionType));
+                await _subwatchContainer.DeleteItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionId));
             }
             catch (Exception ex)
             {
@@ -84,13 +84,13 @@ namespace SubWatch.Repository
             }
         }
 
-        public async Task<Subscription> GetSubscription(string subscriptionId, string subscriptionType)
+        public async Task<Subscription> GetSubscription(string subscriptionId)
         {
             _logger.LogInformation($"Entering {GetSubscription} method");
 
             try
             {
-                ItemResponse<Subscription> itemResponse = await _subwatchContainer.ReadItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionType));
+                ItemResponse<Subscription> itemResponse = await _subwatchContainer.ReadItemAsync<Subscription>(subscriptionId, new PartitionKey(subscriptionId));
 
                 return itemResponse.Resource;
             }
