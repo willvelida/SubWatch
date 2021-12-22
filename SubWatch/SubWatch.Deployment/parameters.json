@@ -40,6 +40,9 @@
         },
         "keyVaultName": {
             "value": "subwatchkeyvault"
+        },
+        "subWatchProductName": {
+            "value": "Subscriptions"
         }
     }
 }
