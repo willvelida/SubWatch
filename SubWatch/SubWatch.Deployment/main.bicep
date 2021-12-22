@@ -139,6 +139,9 @@ resource subWatchKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
   name: keyVaultName
   location: location
   properties: {
+    accessPolicies: [
+      
+    ]
     createMode: 'default'
     enabledForTemplateDeployment: true
     enableSoftDelete: true
