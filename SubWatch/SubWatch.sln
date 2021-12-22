@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubWatch.Services.UnitTests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubWatch.Deployment", "SubWatch.Deployment", "{C4436661-2FE7-4A23-A00D-C7B2974034E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubWatch.UI", "SubWatch.UI\SubWatch.UI.csproj", "{F3076347-FE53-4B1C-9DA7-77DF666C2396}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{DCF2613C-808D-44B9-8882-827F6A5D677E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCF2613C-808D-44B9-8882-827F6A5D677E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCF2613C-808D-44B9-8882-827F6A5D677E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3076347-FE53-4B1C-9DA7-77DF666C2396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3076347-FE53-4B1C-9DA7-77DF666C2396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3076347-FE53-4B1C-9DA7-77DF666C2396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3076347-FE53-4B1C-9DA7-77DF666C2396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

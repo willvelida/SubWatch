@@ -37,6 +37,9 @@
         },
         "publisherName": {
             "value": "SubWatch"
+        },
+        "keyVaultName": {
+            "value": "subwatchkeyvault"
         }
     }
 }

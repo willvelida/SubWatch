@@ -11,6 +11,7 @@ param apimInstanceName string
 param publisherEmail string
 param publisherName string
 param subWatchProductName string
+param keyVaultName string
 
 // Azure Function: App Service Plan
 resource subWatchHostingPlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -130,6 +131,23 @@ resource subWatchApimProduct 'Microsoft.ApiManagement/service/products@2021-08-0
     subscriptionRequired: true
     state: 'published'
     displayName: subWatchProductName
+  }
+}
+
+// Key Vault
+resource subWatchKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    createMode: 'default'
+    enabledForTemplateDeployment: true
+    enableSoftDelete: true
+    softDeleteRetentionInDays: 7
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    tenantId: subscription().tenantId
   }
 }
 
